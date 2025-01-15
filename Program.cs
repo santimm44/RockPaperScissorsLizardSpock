@@ -12,6 +12,20 @@ builder.Services.AddSwaggerGen();
 //added my builder for the service to be in scope
 builder.Services.AddScoped<RockPaperScissorsLizardSpockService>();
 
+//adding Cors policy
+builder.Services.AddCors(Options => {
+    Options.AddPolicy("AllowAll", 
+    policy =>
+    {
+        //allows access from any origin
+        //allows any http request a.k.a httpget, httppost, httpput et cetera
+        //Allows any header
+        policy.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
